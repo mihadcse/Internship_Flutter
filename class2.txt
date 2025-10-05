@@ -16,3 +16,13 @@ flutter block/Flutter provider/GETX
 river pod
 
 STATEMENT MANAGEMENT
+
+================
+Top stories
+new stories
+best stories
+
+three buttons
+
+go router
+shell route
