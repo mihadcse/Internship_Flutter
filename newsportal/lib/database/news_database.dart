@@ -11,7 +11,7 @@ class NewsDatabase {
 
   Future<Database> get database async {
     if (_db != null) return _db!;
-    // ✅ Use browser IndexedDB via sembast_web
+    // Use browser IndexedDB via sembast_web
     _db = await databaseFactoryWeb.openDatabase('news_web.db');
     return _db!;
   }
