@@ -42,6 +42,61 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  void _showForgotPasswordDialog() {
+    final emailController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Reset Password'),
+          content: TextField(
+            controller: emailController,
+            decoration: const InputDecoration(
+              labelText: 'Enter your email',
+              prefixIcon: Icon(Icons.email_outlined),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                final email = emailController.text.trim();
+                if (email.isEmpty) return;
+
+                try {
+                  await Supabase.instance.client.auth.resetPasswordForEmail(
+                    email,
+                    redirectTo: 'http://localhost:8080/reset-password',
+                  );
+
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Password reset email sent! Check your inbox.',
+                        ),
+                      ),
+                    );
+                  }
+                } catch (e) {
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text('Error: $e')));
+                }
+              },
+              child: const Text('Send'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -161,6 +216,13 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ],
+                    ),
+                    TextButton(
+                      onPressed: () => _showForgotPasswordDialog(),
+                      child: const Text(
+                        'Forgot Password?',
+                        style: TextStyle(color: Colors.deepPurple),
+                      ),
                     ),
                   ],
                 ),

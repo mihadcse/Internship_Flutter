@@ -16,6 +16,7 @@ class _AddProductPageState extends State<AddProductPage> {
   final _nameController = TextEditingController();
   final _priceController = TextEditingController();
   final _newCategoryController = TextEditingController();
+  final _detailsController = TextEditingController();
   File? _imageFile;
   Uint8List? _webImage;
   String? _fileName;
@@ -221,6 +222,7 @@ class _AddProductPageState extends State<AddProductPage> {
         'price': double.parse(_priceController.text.trim()),
         'image_url': imageUrl,
         'product_category': _selectedCategory,
+        'product_details': _detailsController.text.trim(),
       });
 
       if (mounted) {
@@ -254,6 +256,8 @@ class _AddProductPageState extends State<AddProductPage> {
       if (mounted) setState(() => _isLoading = false);
     }
   }
+
+  // ... rest of your imports and class definition remain unchanged
 
   @override
   Widget build(BuildContext context) {
@@ -308,7 +312,27 @@ class _AddProductPageState extends State<AddProductPage> {
                 ),
                 const SizedBox(height: 16),
 
-                // Category Dropdown
+                // ✅ ADDED: Product Details Field
+                TextFormField(
+                  controller: _detailsController,
+                  maxLines: 4,
+                  decoration: const InputDecoration(
+                    labelText: 'Product Details',
+                    border: OutlineInputBorder(),
+                    hintText: 'Enter product description/details',
+                    alignLabelWithHint: true,
+                    prefixIcon: Icon(Icons.description),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Please enter product details';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+
+                // Category Dropdown (unchanged)
                 Row(
                   children: [
                     Expanded(
@@ -351,7 +375,7 @@ class _AddProductPageState extends State<AddProductPage> {
                 ),
                 const SizedBox(height: 24),
 
-                // ✅ FIX: Image preview now supports both web and mobile
+                // Image Preview (unchanged)
                 Container(
                   height: 200,
                   decoration: BoxDecoration(
@@ -384,7 +408,7 @@ class _AddProductPageState extends State<AddProductPage> {
                 ),
                 const SizedBox(height: 16),
 
-                // Select Image Button
+                // Select Image Button (unchanged)
                 OutlinedButton.icon(
                   onPressed: _isLoading ? null : _pickImage,
                   icon: const Icon(Icons.photo_library),
@@ -395,7 +419,7 @@ class _AddProductPageState extends State<AddProductPage> {
                 ),
                 const SizedBox(height: 24),
 
-                // Add Product Button
+                // Add Product Button (unchanged)
                 ElevatedButton(
                   onPressed: _isLoading ? null : _addProduct,
                   style: ElevatedButton.styleFrom(

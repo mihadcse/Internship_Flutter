@@ -129,6 +129,17 @@ class _HomePageState extends State<HomePage> {
               ),
               child: const Text('Add Product'),
             ),
+            TextButton(
+              onPressed: () async {
+                await context.push('/view-orders');
+                _fetchProducts(); // refresh after adding
+              },
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.green,
+                foregroundColor: Colors.white,
+              ),
+              child: const Text('View Orders'),
+            ),
           ] else ...[
             Padding(
               padding: const EdgeInsets.only(
@@ -173,7 +184,7 @@ class _HomePageState extends State<HomePage> {
                 : LayoutBuilder(
                     builder: (context, constraints) {
                       // ✅ Responsive: 2 columns for small screens, 3 for larger
-                      int crossAxisCount = constraints.maxWidth < 600 ? 2 : 3;
+                      int crossAxisCount = constraints.maxWidth < 600 ? 2 : 4;
 
                       return GridView.builder(
                         padding: const EdgeInsets.all(16),
@@ -197,7 +208,7 @@ class _HomePageState extends State<HomePage> {
                             child: InkWell(
                               borderRadius: BorderRadius.circular(16),
                               onTap: () {
-                                // optional: open details page
+                                context.go('/product_details', extra: product);
                               },
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,

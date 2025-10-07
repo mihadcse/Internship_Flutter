@@ -12,6 +12,16 @@ void main() async {
   );
   print("Supabase initialized");
 
+  // ✅ Listen for password recovery event
+  Supabase.instance.client.auth.onAuthStateChange.listen((data) {
+    final event = data.event;
+
+    if (event == AuthChangeEvent.passwordRecovery) {
+      // Force navigation to reset-password page
+      appRouter.go('/reset-password');
+    }
+  });
+
   runApp(const MyApp());
 }
 
